@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<style>
+	.reveal p {
+		font-size:  .4em;
+	}
+	.reveal h1 {
+		font-size:  1.25em;
+	}
+	.reveal h2 {
+		font-size:  .75em;
+	}
+	.reveal h3 {
+		font-size:  .65em;
+	}
+	.reveal h4 {
+		font-size:  .5em;
+	}
+	.reveal li {
+		font-size:  .4em;
+	}
+	
+</style>
+
+# Git good
+#### Github workshop 2022-06-10
+</div>
+
+<aside class="notes"><p>household rules: ask questions all the time.
+Have everyone gotten their SSH keys set up?</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# git `$\neq$` github
+</div>
+
+<aside class="notes"><p>git is primarily just a place to store git repositories.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Why should you learn github? 
+- Backup system for you own code <!-- .element: class="fragment" data-fragment-index="1" -->
+- Reproducible research <!-- .element: class="fragment" data-fragment-index="2" -->
+- Collaborative reasearch and development <!-- .element: class="fragment" data-fragment-index="3" -->
+- Don't reinvent the wheel... <!-- .element: class="fragment" data-fragment-index="4" -->
+</div>
+
+<aside class="notes"><p>also, and very important for us, it makes it easier to run code in several places. Locally, in the cloud and on gpu nodes.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Example repository
+
+<img src="example github repo top.png" alt="" style="object-fit: scale-down">
+</div>
+
+<aside class="notes"><ul>
+<li>stars </li>
+<li>Issues</li>
+<li>latest update</li>
+<li>github pages link</li>
+<li>Repositories can be private or public</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Example repository
+
+<img src="example github repo bottom.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## What is git?
+
+- git is a version control system (`$\approx$` backup system). 
+- Ancient but  still widely used! <!-- .element: class="fragment" data-fragment-index="1" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Motivation
+ - v.1
+ - v.1.2
+ - v.1.2_final
+ - v.1.2_final_final
+ - v.1.3_oh_I_forgot_to_use_the latest
+</div>
+
+<aside class="notes"><p>versioning
+code in many places.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## What is git/github for?
+
+text files.  `Primarily` <!-- .element: class="fragment" data-fragment-index="1" -->
+
+Basically anything you can open in a text editor without it looking all kinds of wierd. This includes all code files,  .csv  files,  .json, latex .tex files +++<!-- .element: class="fragment" data-fragment-index="2" -->
+
+word files (.doc and .docx) and excel files (.xls and .xlsx) don't behave well with many git tools <!-- .element: class="fragment" data-fragment-index="3" --> 
+
+(and no, I don't consider word a text editor)<!-- .element: class="fragment" data-fragment-index="4" -->
+</div>
+
+<aside class="notes"><p>you can still use git as a backup for .pdf and microsoft office files, but it should not be considered clod storage.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## What will we learn today?
+- Some basic git commands and terminology
+- To set up a git repository
+- To push cahnges to github
+- ... and to pull changes from github
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The git datamodel
+
+
+
+<div class="mermaid">
+gitGraph
+	commit tag:"v.1"
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The git datamodel
+
+
+
+<div class="mermaid">
+gitGraph
+	commit tag:"v.1"
+	commit tag:"v.2"
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The git datamodel
+
+
+
+<div class="mermaid">
+    gitGraph
+       commit
+       commit
+       branch feature
+       commit
+       commit
+       commit
+       checkout main
+       merge feature
+       commit
+       commit
+
+</div>
+</div>
+
+<aside class="notes"><p>talk about the HEAD and branches.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The git datamodel
+
+Learning git is learning the tools we use to manipulate the graph (`$\approx$` backup history).
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Getting into the nitty *gitty*
+
+We will now *fork* and *clone* out first github repository. 
+
+Follow this link: https://github.com/ntnu-mr-cancer/github-workshop <!-- .element: class="fragment" data-fragment-index="1" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Clone vs. Fork
+...the difference lies in the *remote*. 
+
+A fork first creates a copy of the repository to your github user that you have permissions to make changes to.
+</div>
+
+<aside class="notes"><p>if we were to clone the original repo we would have permissions to push changes to github.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Our first commit
+
+1. Edit the `README.md`
+2. Run the following in the terminal <br> git status
+3. Add `README.md` to the staging area by running <br>`git add README.md`
+4. Commit the change by running <br>`git commit -m "<message>"`
+</div>
+
+<aside class="notes"><p>What is the staging area?
+What have we done now in terms of the graph?</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Catch-up
+
+```bash
+git status
+git add README.md
+git commit -m "Updated README.md"
+```
+</div>
+
+<aside class="notes"><p>What is the staging area?
+What have we done now in terms of the graph?</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## git diff
+Make one more change to `README.md`. After doing so run <br>
+`git diff`<br>
+what do you see?
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Special files in github
+We have already encountered one: `README.md`
+
+We will now create another: <!-- .element: class="fragment" data-fragment-index="1" --> `.gitignore` <!-- element class="fragment" -->
+</div>
+
+<aside class="notes"><p>README.md is the file shown when you click a repository. It is written in markdown, or rst.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Hiding from git
+1. Create a file in the github repository that contains a secret.
+2. Run <br> `git status`
+3. Normally you would have to create the `.gitignore` file, but I've already made it for you.
+4. Add the file name of your secret file to `.gitignore`
+5. Run <br> `git status`
+</div>
+
+<aside class="notes"><p>We see that the file is now hidden from git. This is a good way to make sure that you send data we don&#39;t want to github. This can for example be excel sheets containing sensitive data.</p>
+<p>A better practive here is however to keep the excel file in a separate folder outside the git root folder.</p>
+</aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Pushing the changes to github
+We have now made and comitted changes locally that is not on github. To push the local changes to github we simply run<br>
+`git push`
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Congratulations 🎉
+You've made your first github repository.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Licensing your code
+
+We will now add a license which is the final special file we will cover. Follow what Bendik is doing 😉
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Pulling changes from github
+Now that we've added a licence file to our github repository it is one commit ahead of our local repository. To sync them up again we need to run<br>`git pull`
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Creating your own repository from scratch
+This is my recommended way of creating a new github repository from scratch. This especially makes it so that you don't have errors with `unrelated histories`, but we wont go into more detail about that - come ask me if it ever shows up.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Recipe
+
+1. Start by creating a new repository on `.github`. Make sure that it is empty: no `README.md`, no `LICENCE`, nothing.
+2. Follow the intructions given after creation. These will only show if the repository is created completely empty.
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Branches
+```
+git branch
+git branch feature
+git checkout feature
+<edit file>
+git checkout main
+git merge feature
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Branches
+
+
+<div class="mermaid">
+	gitGraph
+		commit
+		commit
+		branch feature
+		commit
+		checkout main
+		merge feature
+
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Branches
+
+
+<div class="mermaid">
+	gitGraph
+		commit
+		commit
+		branch feature
+		commit id: "f1"
+		commit
+		checkout main
+		commit
+		checkout feature
+		branch feature2
+		commit
+		checkout main
+		merge feature2
+		checkout feature
+		commit
+		checkout main
+		commit
+		merge feature
+
+</div>
+</div>
+
+<aside class="notes"><p>several branches can be worked at at the same time.</p>
+</aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## (More) advanced git
+
+We have still not covered how to roll back a change, or how to contribute to other peoples repositories using `forks` and `pull requests` and how to treat `merge conflicts`, but we will have to do that another time.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 500px; width: 500px; min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Resources
+Here are some excellent resources should you want to learn more <br>
+- [Excellent youtube lecture video git (a bit advanced)](https://www.youtube.com/watch?v=2sjqTHE0zok&t=3020s)
+- [The excellent lecuture notes from *code refinery*](https://coderefinery.org/lessons/). Especially the *introduction to version control*.
+</div>
+
+<aside class="notes"><p>if you want I can set aside 1h next wednesday to help get local coding project on github.</p>
+</aside></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":500,"height":500,"margin":0.04,"maxScale":5,"controls":true,"progress":true,"slideNumber":true,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
